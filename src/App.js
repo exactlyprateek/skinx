@@ -1,11 +1,11 @@
 import './App.css';
 // import { Container, Row, Col } from 'react-bootstrap';
 
-import MyDropzone from './components/MyDropzone';
+// import MyDropzone from './components/MyDropzone';
 import FullWidthGrid from './components/Main';
 // import { Dropdown, DropdownButton } from 'react-bootstrap';
 import './components/styles/style.css';
-const URL = 'http://18.218.101.160:5000/upload_file';
+// const URL = 'http://18.218.101.160:5000/upload_file';
 function App() {
 	return (
 		<div className="App">

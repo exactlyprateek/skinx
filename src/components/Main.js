@@ -90,7 +90,7 @@ export default function FullWidthGrid() {
 								<Typography align="left" variant="h5" gutterBottom>
 									Original Image
 								</Typography>
-								<img src="https://via.placeholder.com/150" />
+								<img alt="150" src="https://via.placeholder.com/150" />
 								<Alert className="mt-2" severity="success">
 									Some other options are shown aside!
 								</Alert>
@@ -104,7 +104,7 @@ export default function FullWidthGrid() {
 								<Grid container spacing={2}>
 									{[ '1', '2', '3', '4', '5', '6' ].map((i, idx) => (
 										<Grid item xs={6} sm={6}>
-											<img src={`https://via.placeholder.com/150?text=${i}`} />
+											<img alt={idx} src={`https://via.placeholder.com/150?text=${i}`} />
 										</Grid>
 									))}
 								</Grid>
