@@ -1,11 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Button from '@material-ui/core/Button';
-import { Container } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+
 class Upload extends React.Component {
 	state = {
 		files: null,

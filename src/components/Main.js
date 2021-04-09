@@ -1,18 +1,16 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import ButtonAppBar from './AppBar';
 import { Container } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
+
 import Typography from '@material-ui/core/Typography';
-import MyDropzone from './MyDropzone';
+
 import Alert from '@material-ui/lab/Alert';
 import Upload from './Upload';
-import Login from './Login/Login';
+
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -24,28 +22,22 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.secondary
 	}
 }));
-function setToken(userToken) {
-	sessionStorage.setItem('token', JSON.stringify(userToken));
-}
+// function setToken(userToken) {
+// 	sessionStorage.setItem('token', JSON.stringify(userToken));
+// }
 
-function getToken() {
-	const tokenString = sessionStorage.getItem('token');
-  const userToken = JSON.parse(tokenString);
-  return userToken?.token
-}
+// function getToken() {
+// 	const tokenString = sessionStorage.getItem('token');
+//   const userToken = JSON.parse(tokenString);
+//   return userToken?.token
+// }
 
 export default function Main() {
 
 	const classes = useStyles();
 
-	const [ age, setAge ] = React.useState('one');
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
-	const token = getToken();
-	if(token) {
-    return <Login setToken={setToken} />
-  }
+
+	
 	return (
 		<span>
 			<ButtonAppBar />
