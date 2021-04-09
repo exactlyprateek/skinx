@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +11,9 @@ import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
 import MyDropzone from './MyDropzone';
 import Alert from '@material-ui/lab/Alert';
-import Button from '@material-ui/core/Button';
+import Upload from './Upload';
+import Login from './Login/Login';
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		flexGrow: 1
@@ -22,14 +24,28 @@ const useStyles = makeStyles((theme) => ({
 		color: theme.palette.text.secondary
 	}
 }));
+function setToken(userToken) {
+	sessionStorage.setItem('token', JSON.stringify(userToken));
+}
 
-export default function FullWidthGrid() {
+function getToken() {
+	const tokenString = sessionStorage.getItem('token');
+  const userToken = JSON.parse(tokenString);
+  return userToken?.token
+}
+
+export default function Main() {
+
 	const classes = useStyles();
+
 	const [ age, setAge ] = React.useState('one');
 	const handleChange = (event) => {
 		setAge(event.target.value);
 	};
-
+	const token = getToken();
+	if(token) {
+    return <Login setToken={setToken} />
+  }
 	return (
 		<span>
 			<ButtonAppBar />
@@ -39,8 +55,8 @@ export default function FullWidthGrid() {
 				</Typography>
 				<div className={classes.root}>
 					<Grid container spacing={2}>
-						<Grid item xs={12} sm={4}>
-							<Paper className={classes.paper}>
+						<Grid item xs={12} sm={6}>
+							<Paper align="center" className={classes.paper}>
 								<Typography className="py-2" align="left" variant="p">
 									Choose an Image
 								</Typography>
@@ -56,36 +72,21 @@ export default function FullWidthGrid() {
 										Upload
 									</Button>
 								</label> */}
-								<MyDropzone />
-
-								<FormControl variant="outlined" className="mt-2" style={{width:"80%"}}>
-									<InputLabel id="demo-simple-select-outlined-label">Test for</InputLabel>
-									<Select
-										labelId="demo-simple-select-outlined-label"
-										id="demo-simple-select-outlined"
-										value={age}
-										onChange={handleChange}
-										label="Test For"
-									>
-										<MenuItem value="two">
-											<em>None</em>
-										</MenuItem>
-										<MenuItem value={10}>Cancer</MenuItem>
-										<MenuItem value={20}>Cancer1</MenuItem>
-										<MenuItem value={30}>Cancer2</MenuItem>
-									</Select>
-								</FormControl>
+								{/* <MyDropzone /> */}
+								<Upload />
 								
-								<Button style={{width:"80%"}} className="mt-2" variant="outlined" color="primary">
-									Predict
-								</Button>
-                                <Alert style={{width:"100%"}} className="mt-2" severity="success">
-									Image uploaded successfully!
-								</Alert>
+								
+								<div className="ml-4">
+									<div className="ml-4">
+										<Alert style={{ width: '82%' }} className="mt-2 ml-4 " severity="error">Image not uploaded Try Again!</Alert>
+										<Alert style={{ width: '82%' }} className="mt-2 ml-4 " severity="success">
+											Image uploaded successfully!
+										</Alert>
+									</div>{' '}
+								</div>
 							</Paper>
 						</Grid>
-
-						<Grid item xs={12} sm={4}>
+						<Grid item xs={12} sm={6}>
 							<Paper className={classes.paper}>
 								<Typography align="left" variant="h5" gutterBottom>
 									Original Image
@@ -96,7 +97,8 @@ export default function FullWidthGrid() {
 								</Alert>
 							</Paper>
 						</Grid>
-						<Grid item xs={12} sm={4}>
+
+						<Grid item xs={12} sm={12}>
 							<Paper className={classes.paper}>
 								<Typography className="pt-2" align="left" variant="h5" gutterBottom>
 									Some Other Examples

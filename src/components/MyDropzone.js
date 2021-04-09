@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react';
 import {useDropzone} from 'react-dropzone';
 
+
 const baseStyle = {
   flex: 1,
   display: 'flex',
@@ -48,7 +49,7 @@ function MyDropzone(props) {
     isDragReject,
     isDragAccept
   ]);
-
+ 
   return (
     <div className="container">
       <div {...getRootProps({style})}>
