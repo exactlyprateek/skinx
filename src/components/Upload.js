@@ -153,7 +153,7 @@ class Upload extends React.Component {
 									<FormControl id="email">
 										<FormLabel>Select the image file (.jpg, .png)</FormLabel>
 										<InputGroup my="4">
-											<Input type="file" onChange={this.handleFile} />
+											<Input  p="1.5" type="file" onChange={this.handleFile} />
 										</InputGroup>
 										{/* <Input type="email" /> */}
 									</FormControl>
