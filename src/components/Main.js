@@ -1,7 +1,7 @@
 import React from 'react';
 import Upload from './Upload';
 import NavBar from './NavBar.js';
-import { Container, Box, SimpleGrid, Image, Text, Center, Heading } from '@chakra-ui/react';
+import { Container, Box, SimpleGrid, Image,  Center, Heading } from '@chakra-ui/react';
 import './styles/style.css';
 export default function Main() {
 	return (

@@ -3,24 +3,21 @@ import axios from 'axios';
 
 import {
 	Button,
-	ButtonGroup,
 	InputGroup,
-	InputLeftAddon,
 	InputRightElement,
 	Input,
 	Select,
-	Text,
-	Link,
+	Alert,
 	Flex,
 	Box,
-	Checkbox,
 	Stack,
 	FormControl,
 	Heading,
-	useColorModeValue,
-	FormLabel
+	FormLabel,AlertIcon,
+	
 } from '@chakra-ui/react';
 
+import News from './News';
 class Upload extends React.Component {
 	state = {
 		files: null,
@@ -34,7 +31,8 @@ class Upload extends React.Component {
 		arr2: [ 'Cancer', 'Acne', 'Melanoma' ],
 		show: false,
 		loginLoad: false,
-		apiLoading: false
+		apiLoading: false,
+		invalid: false
 	};
 	loginLoadHandler = (event) => {
 		this.setState({ loginLoad: event.target.value });
@@ -50,7 +48,8 @@ class Upload extends React.Component {
 	};
 	handleFile = (event) => {
 		this.setState({
-			files: event.target.files[0]
+			files: event.target.files[0],
+			invalid: false
 		});
 	};
 	handleLogin = () => {
@@ -106,7 +105,14 @@ class Upload extends React.Component {
 					disease: response.data.disease,
 					apiLoading: false
 				});
-				console.log(response.data.disease);
+
+				if (response.data === 'Please upload a valid image') {
+					this.setState({
+						invalid: true,
+						apiLoading: false
+					});
+				}
+				console.log(response);
 			})
 			.catch((response) => {
 				//handle error
@@ -190,14 +196,38 @@ class Upload extends React.Component {
 											Predict
 										</Button>
 									</Stack>
-
-									{this.state.disease ? (
-										<div>the disease is {this.state.disease}</div>
+									{this.state.invalid ? (
+										<Alert variant="left-accent" status="error">
+											<AlertIcon />
+											The image is invalid
+										</Alert>
+									) : null}
+									{this.state.disease ? <News name={this.state.disease} /> : null}
+									{/* {this.state.disease_type === 'acne' ? this.state.disease ? this.state.disease ===
+									'acne' ? (
+										<News name="ACNE" />
 									) : (
+										<News name="No Match" />
+									) : null : null}
+									{this.state.disease_type === 'cancer' ? null : null}
+									{this.state.disease_type === 'melanoma' ? null : null}
+
+									{this.state.disease ? this.state.disease === 'non_acne' ? (
+										<Center>
+											<HStack>
+												<Text fontSize="32px">ACNE</Text>
+												<IconContext.Provider value={{ color: '#bc2203', size: '32px' }}>
+													<div>
+														<BsCheckCircle />
+													</div>
+												</IconContext.Provider>
+											</HStack>
+										</Center>
+									) : null : (
 										<Text color="gray.400" bold>
 											click on predict to predict
 										</Text>
-									)}
+									)} */}
 								</Stack>
 							</Box>
 						</Stack>
@@ -227,9 +257,7 @@ class Upload extends React.Component {
 										<FormLabel>Password</FormLabel>
 										<InputGroup size="md" my="4">
 											<Input
-												type="password"
 												name="password"
-												placeholder="password"
 												value={this.state.password}
 												onChange={this.passwordHandler}
 												pr="4.5rem"
@@ -238,20 +266,20 @@ class Upload extends React.Component {
 											/>
 											<InputRightElement width="4.5rem">
 												<Button
-												outline="none"
-												boxShadow="none"
-												border="none"
-												transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-												_focus={{
-													boxShadow: 'none',
-													border: 'none',
-													outline: 'none'
-												}}
-												_active={{
-													outline: 'none',
-													transform: 'scale(0.94)',
-													boxShadow: 'none'
-												}}
+													outline="none"
+													boxShadow="none"
+													border="none"
+													transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+													_focus={{
+														boxShadow: 'none',
+														border: 'none',
+														outline: 'none'
+													}}
+													_active={{
+														outline: 'none',
+														transform: 'scale(0.94)',
+														boxShadow: 'none'
+													}}
 													colorScheme="skin"
 													h="1.75rem"
 													size="sm"
@@ -264,20 +292,20 @@ class Upload extends React.Component {
 									</FormControl>
 									<Stack spacing={10}>
 										<Button
-										outline="none"
-										boxShadow="none"
-										border="none"
-										transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-										_focus={{
-											boxShadow: 'none',
-											border: 'none',
-											outline: 'none'
-										}}
-										_active={{
-											outline: 'none',
-											transform: 'scale(0.94)',
-											boxShadow: 'none'
-										}}
+											outline="none"
+											boxShadow="none"
+											border="none"
+											transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+											_focus={{
+												boxShadow: 'none',
+												border: 'none',
+												outline: 'none'
+											}}
+											_active={{
+												outline: 'none',
+												transform: 'scale(0.94)',
+												boxShadow: 'none'
+											}}
 											isLoading={this.state.loginLoad}
 											colorScheme="skin"
 											onClick={(e) => this.handleLogin(e)}
