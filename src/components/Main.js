@@ -3,20 +3,21 @@ import Upload from './Upload';
 import NavBar from './NavBar.js';
 import { Container, Box, SimpleGrid, Image,  Center, Heading } from '@chakra-ui/react';
 import './styles/style.css';
+
 export default function Main() {
 	return (
 		<span id="main">
 			<NavBar />{' '}
 			<Container maxW="container.xl">
-				<SimpleGrid mt="4" minChildWidth="500px" spacing="40px">
-					<Box className="shadow-anim" bg="gray.50" minH="450px" height="87vh">
+				<SimpleGrid mt="4" minChildWidth="400px" spacing="40px">
+					<Box className="shadow-anim" bg="#f8f9fa" minH="450px" height="87vh">
 						<Center>
 							<Box w="80%" p="4" my="4">
 								<Upload />
 							</Box>
 						</Center>
 					</Box>
-					<Box className="shadow-anim" bg="gray.50" height="87vh">
+					<Box className="shadow-anim" bg="#f8f9fa" height="87vh">
 						<Heading size="xl" mt="2">
 							More Examples
 						</Heading>

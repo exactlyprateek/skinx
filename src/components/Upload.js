@@ -13,8 +13,8 @@ import {
 	Stack,
 	FormControl,
 	Heading,
-	FormLabel,AlertIcon,
-	
+	FormLabel,
+	AlertIcon
 } from '@chakra-ui/react';
 
 import News from './News';
@@ -73,6 +73,8 @@ class Upload extends React.Component {
 					loginLoad: false
 				});
 				console.log(response.data.access_token);
+				localStorage.setItem('token', JSON.stringify(response.data.access_token));
+				window.location.reload();
 			})
 			.catch((err) => {
 				this.setState({
@@ -139,21 +141,32 @@ class Upload extends React.Component {
 			});
 		}
 	};
+	componentDidMount() {
+		if (localStorage.getItem('token')) {
+			this.setState({
+				token: localStorage.getItem('token')
+			});
+		} else {
+			this.setState({
+				token: null
+			});
+		}
+	}
 	render() {
 		return (
 			<div>
 				{this.state.token ? (
 					<Flex align={'center'} justify={'center'}>
-						<Stack spacing={8} maxW={'lg'} px={6}>
+						<Stack spacing={4} maxW={'lg'}>
 							<Stack align={'center'}>
 								<Heading fontSize={'3xl'}>SkinX</Heading>
 							</Stack>
-							<Box rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
-								<Stack spacing={4}>
+							<Box rounded={'lg'} bg="white" boxShadow={'lg'} p={6}>
+								<Stack spacing={2}>
 									<FormControl id="email">
 										<FormLabel>Select the image file (.jpg, .png)</FormLabel>
 										<InputGroup my="4">
-											<Input  p="1.5" type="file" onChange={this.handleFile} />
+											<Input p="1.5" type="file" onChange={this.handleFile} />
 										</InputGroup>
 										{/* <Input type="email" /> */}
 									</FormControl>
@@ -175,6 +188,7 @@ class Upload extends React.Component {
 									</FormControl>
 									<Stack spacing={10}>
 										<Button
+											disabled={!(this.state.files && this.state.disease_type)}
 											outline="none"
 											boxShadow="none"
 											border="none"
