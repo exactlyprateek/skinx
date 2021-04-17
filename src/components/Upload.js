@@ -6,7 +6,6 @@ import {
 	InputGroup,
 	InputRightElement,
 	Input,
-	Select,
 	Alert,
 	Flex,
 	Box,
@@ -14,10 +13,14 @@ import {
 	FormControl,
 	Heading,
 	FormLabel,
-	AlertIcon
+	Text,
+	AlertIcon,
+	Image,
+	Center
 } from '@chakra-ui/react';
 
 import News from './News';
+import Similar from './Similar';
 class Upload extends React.Component {
 	state = {
 		files: null,
@@ -27,18 +30,24 @@ class Upload extends React.Component {
 		disease: null,
 		token: null,
 		age: 0,
-		arr1: [ 'cancer', 'acne', 'melanoma' ],
-		arr2: [ 'Cancer', 'Acne', 'Melanoma' ],
+		arr1: [ 'cancer', 'melanoma' ],
+		arr2: [ 'Assess Type of Cancer', 'Assess Malignancy' ],
 		show: false,
 		loginLoad: false,
-		apiLoading: false,
-		invalid: false
+		apiLoading1: false,
+		apiLoading2: false,
+		name: '',
+		invalid: false,
+		img_url: null
 	};
 	loginLoadHandler = (event) => {
 		this.setState({ loginLoad: event.target.value });
 	};
-	apiLoadingHandler = (event) => {
-		this.setState({ apiLoading: event.target.value });
+	apiLoadingHandler1 = (event) => {
+		this.setState({ apiLoading1: event.target.value });
+	};
+	apiLoadingHandler2 = (event) => {
+		this.setState({ apiLoading2: event.target.value });
 	};
 	usernameHandler = (event) => {
 		this.setState({ username: event.target.value });
@@ -47,8 +56,11 @@ class Upload extends React.Component {
 		this.setState({ password: event.target.value });
 	};
 	handleFile = (event) => {
+		console.log(event.target.files[0]);
 		this.setState({
 			files: event.target.files[0],
+			name: event.target.files[0].name,
+			img_url: URL.createObjectURL(event.target.files[0]),
 			invalid: false
 		});
 	};
@@ -61,12 +73,8 @@ class Upload extends React.Component {
 		fd.append('username', this.state.username);
 		fd.append('password', this.state.username);
 
-		axios({
-			method: 'post',
-			url: 'http://3.128.170.254:5000/token',
-			data: fd,
-			headers: { 'Content-Type': 'multipart/form-data' }
-		})
+		axios
+			.post('http://3.128.170.254:5000/token', fd)
 			.then((response) => {
 				this.setState({
 					token: response.data.access_token,
@@ -81,6 +89,93 @@ class Upload extends React.Component {
 					loginLoad: false
 				});
 				console.log(err);
+			});
+	};
+	handleCancerUpload = () => {
+		this.setState({
+			apiLoading1: true
+		});
+		let formData = new FormData();
+
+		//Adding files to the formdata
+		// formData.append('disease', 'melanoma');
+
+		formData.append('file', this.state.files);
+
+		axios
+			.post(
+				`http://3.128.170.254:5000/skinx?disease=cancer`,
+				formData,
+				{
+					headers: { Authorization: `Bearer ${this.state.token}` }
+				}
+				// , {
+				// 	onUploadProgress:  (progressEvent) => {
+				// 		console.log('upload progress:' + Math.round (progressEvent.loaded / progressEvent.total * 100) + "%" );
+				// 	}
+				// }
+			)
+			.then((response) => {
+				this.setState({
+					disease: response.data.disease,
+					apiLoading1: false
+				});
+
+				if (response.data === 'Please upload a valid image') {
+					this.setState({
+						invalid: true,
+						apiLoading1: false
+					});
+				}
+				console.log(response);
+			})
+			.catch((response) => {
+				//handle error
+				console.log(response);
+				this.setState({
+					apiLoading1: false
+				});
+			});
+	};
+	handleMelanomaUpload = () => {
+		this.setState({
+			apiLoading2: true
+		});
+		let formData = new FormData();
+
+		//Adding files to the formdata
+		// formData.append('disease', 'melanoma');
+
+		formData.append('file', this.state.files);
+
+		axios({
+			method: 'post',
+			url: `http://3.128.170.254:5000/skinx?disease=melanoma`,
+			data: formData,
+			headers: {
+				Authorization: `Bearer ${this.state.token}`
+			}
+		})
+			.then((response) => {
+				this.setState({
+					disease: response.data.disease,
+					apiLoading2: false
+				});
+
+				if (response.data === 'Please upload a valid image') {
+					this.setState({
+						invalid: true,
+						apiLoading2: false
+					});
+				}
+				console.log(response);
+			})
+			.catch((response) => {
+				//handle error
+				console.log(response);
+				this.setState({
+					apiLoading2: false
+				});
 			});
 	};
 	handleUpload = () => {
@@ -130,6 +225,11 @@ class Upload extends React.Component {
 		});
 		console.log(this.state.disease_type);
 	};
+	cleanUp = (event) => {
+		this.setState({
+			disease: null
+		});
+	};
 	handleClick = (event) => {
 		if (this.state.show === true) {
 			this.setState({
@@ -154,25 +254,68 @@ class Upload extends React.Component {
 	}
 	render() {
 		return (
-			<div>
+			<div id="upload">
 				{this.state.token ? (
-					<Flex align={'center'} justify={'center'}>
-						<Stack spacing={4} maxW={'lg'}>
-							<Stack align={'center'}>
-								<Heading fontSize={'3xl'}>SkinX</Heading>
-							</Stack>
-							<Box rounded={'lg'} bg="white" boxShadow={'lg'} p={6}>
-								<Stack spacing={2}>
-									<FormControl id="email">
-										<FormLabel>Select the image file (.jpg, .png)</FormLabel>
-										<InputGroup my="4">
-											<Input p="1.5" type="file" onChange={this.handleFile} />
-										</InputGroup>
-										{/* <Input type="email" /> */}
-									</FormControl>
-									<FormControl id="password">
-										<FormLabel>Select the type of disease</FormLabel>
-										<InputGroup size="md" my="4">
+					<Flex align={'center'} justify={'center'} p={[ '0' ]} w="100%">
+						<Stack spacing={4} width="30rem">
+							<Heading align="center" color="white" className="font text-shadow" fontSize="3xl">
+								This is a Caption
+							</Heading>
+							<Box
+								
+								overflow="scroll"
+								style={{ scrollbarWidth: 'none', marginBottom: "2rem" }}
+								rounded="md"
+								bg="white"
+								boxShadow={'lg'}
+								p={6}
+							>
+								{!this.state.disease ? (
+									<Stack spacing={2}>
+										<FormControl id="email">
+											<FormLabel>Select the image file (.jpg, .png)</FormLabel>
+											<InputGroup my="4">
+												<Input
+													display="none"
+													p="1.5"
+													accept="image/*"
+													type="file"
+													onChange={this.handleFile}
+													ref={(fileInput) => (this.fileInput = fileInput)}
+												/>
+												<Button width="100%" onClick={() => this.fileInput.click()}>
+													{this.state.files ? <p>Select Another</p> : <p>Browse </p>}
+												</Button>
+											</InputGroup>
+											<InputGroup my="4">
+												{/* <Text mx="2" noOfLines="1" isTruncated>
+												{this.state.name}
+											</Text> */}
+											</InputGroup>
+
+											{this.state.img_url ? (
+												<Center>
+													<Image
+													transition= "all 0.2s cubic-bezier(.39,.58,.57,1);"
+													_active={{
+														outline: 'none',
+														transform: 'scale(0.94)',
+														boxShadow: 'none'
+													}}
+													_hover={{boxShadow: "1px 0px 22px grey", transform: "scale(1.01)"}}
+													rounded="md"
+														width="70%"
+														mx="0"
+														src={this.state.img_url}
+														alt="selected image"
+													/>
+												</Center>
+											) : null}
+											{/* <Input type="email" /> */}
+										</FormControl>
+										<FormControl>
+											<FormLabel>Run Assessment For</FormLabel>
+											{/* <InputGroup size="md" my="4">
 											<Select
 												onChange={(e) => this.handleDisease(e)}
 												value={this.state.disease_type}
@@ -181,43 +324,102 @@ class Upload extends React.Component {
 											>
 												<option disabled hidden value="" />
 												{this.state.arr1.map((x, idx) => (
-													<option value={x}>{this.state.arr2[idx]}</option>
+													<option className="font" value={x}>{this.state.arr2[idx]}</option>
 												))}
 											</Select>
-										</InputGroup>
-									</FormControl>
-									<Stack spacing={10}>
-										<Button
-											disabled={!(this.state.files && this.state.disease_type)}
-											outline="none"
-											boxShadow="none"
-											border="none"
-											transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
-											_focus={{
-												boxShadow: 'none',
-												border: 'none',
-												outline: 'none'
-											}}
-											_active={{
-												outline: 'none',
-												transform: 'scale(0.94)',
-												boxShadow: 'none'
-											}}
-											isLoading={this.state.apiLoading}
-											colorScheme="skin"
-											onClick={(e) => this.handleUpload(e)}
-										>
-											Predict
+										</InputGroup> */}
+										</FormControl>
+										<Stack spacing={4}>
+											{/* {this.state.arr2.map((x, idx) => (
+											<Button
+												disabled={!this.state.files}
+												outline="none"
+												boxShadow="none"
+												border="none"
+												transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+												_focus={{
+													boxShadow: 'none',
+													border: 'none',
+													outline: 'none'
+												}}
+												_active={{
+													outline: 'none',
+													transform: 'scale(0.94)',
+													boxShadow: 'none'
+												}}
+												isLoading={this.state.apiLoading}
+												colorScheme="skin"
+												onClick={(e) => this.handleUpload(e)}
+											>
+												{x}
+											</Button>
+										))} */}
+											<Button
+												disabled={!this.state.files || this.state.apiLoading2 === true}
+												outline="none"
+												boxShadow="none"
+												border="none"
+												transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+												_focus={{
+													boxShadow: 'none',
+													border: 'none',
+													outline: 'none'
+												}}
+												_active={{
+													outline: 'none',
+													transform: 'scale(0.94)',
+													boxShadow: 'none'
+												}}
+												isLoading={this.state.apiLoading1}
+												colorScheme="skin"
+												onClick={(e) => this.handleCancerUpload(e)}
+											>
+												Assess Type of Cancer
+											</Button>
+											<Button
+												disabled={!this.state.files || this.state.apiLoading1 === true}
+												outline="none"
+												boxShadow="none"
+												border="none"
+												transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+												_focus={{
+													boxShadow: 'none',
+													border: 'none',
+													outline: 'none'
+												}}
+												_active={{
+													outline: 'none',
+													transform: 'scale(0.94)',
+													boxShadow: 'none'
+												}}
+												isLoading={this.state.apiLoading2}
+												colorScheme="skin"
+												onClick={(e) => this.handleMelanomaUpload(e)}
+											>
+												Assess Malignancy
+											</Button>
+										</Stack>
+									</Stack>
+								) : (
+									<Stack spacing={4}>
+										{' '}
+										<News name={this.state.disease} />
+										<Text>Similar Images</Text>
+										<Similar />
+										<Button colorScheme="skin" onClick={() => this.cleanUp()}>
+											Assess Another
 										</Button>
 									</Stack>
-									{this.state.invalid ? (
-										<Alert variant="left-accent" status="error">
-											<AlertIcon />
-											The image is invalid
-										</Alert>
-									) : null}
-									{this.state.disease ? <News name={this.state.disease} /> : null}
-									{/* {this.state.disease_type === 'acne' ? this.state.disease ? this.state.disease ===
+								)}
+
+								{this.state.invalid ? (
+									<Alert mt="4" variant="left-accent" status="error">
+										<AlertIcon />
+										The image is invalid
+									</Alert>
+								) : null}
+
+								{/* {this.state.disease_type === 'acne' ? this.state.disease ? this.state.disease ===
 									'acne' ? (
 										<News name="ACNE" />
 									) : (
@@ -242,7 +444,6 @@ class Upload extends React.Component {
 											click on predict to predict
 										</Text>
 									)} */}
-								</Stack>
 							</Box>
 						</Stack>
 					</Flex>
@@ -250,7 +451,9 @@ class Upload extends React.Component {
 					<Flex align={'center'} justify={'center'}>
 						<Stack spacing={8} maxW={'lg'} px={6}>
 							<Stack align={'center'}>
-								<Heading fontSize={'3xl'}>Sign in to use SkinX</Heading>
+								<Heading color="white" className="font" fontSize={'4xl'}>
+									Welcome Back!
+								</Heading>
 							</Stack>
 							<Box rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
 								<Stack spacing={4}>

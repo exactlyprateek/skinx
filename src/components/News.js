@@ -6,7 +6,7 @@ function News(props) {
     return (
         <Center>
         <HStack>
-            <Text textTransform="uppercase" fontWeight="bold" fontSize="32px">{props.name}</Text>
+            <Text textTransform="uppercase" fontWeight="bold" fontSize="1.2em">{props.name}</Text>
             <IconContext.Provider value={{ color: 'green', size: '32px' }}>
                 <div>
                     <BsCheckCircle />
