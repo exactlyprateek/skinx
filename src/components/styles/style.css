@@ -13,12 +13,15 @@
 	font-style: normal;
 }
 body {
+	background-color: aliceblue !important;
+}
+/* body {
 	background: -webkit-linear-gradient(left, #D4A276 20px, transparent 1%) center,
 		-webkit-linear-gradient(#D4A276 20px, transparent 1%) center, #F3D5B5 !important;
 	background: linear-gradient(90deg, #D4A276 20px, transparent 1%) center,
 		linear-gradient(#D4A276 20px, transparent 1%) center, #F3D5B5 !important;
 	background-size: 22px 22px !important;
-}
+} */
 @import "~react-image-gallery/styles/css/image-gallery.css";
 .font {
 	font-family: "Avenir", sans-serif !important;

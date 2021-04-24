@@ -16,10 +16,11 @@ import {
 	Text,
 	AlertIcon,
 	Image,
-	Center
+	Center,
+	SimpleGrid
 } from '@chakra-ui/react';
 
-import News from './News';
+// import News from './News';
 import Similar from './Similar';
 class Upload extends React.Component {
 	state = {
@@ -38,7 +39,8 @@ class Upload extends React.Component {
 		apiLoading2: false,
 		name: '',
 		invalid: false,
-		img_url: null
+		img_url: null,
+		width: [ '90vw', '80vw', '50vw', '40vw' ]
 	};
 	loginLoadHandler = (event) => {
 		this.setState({ loginLoad: event.target.value });
@@ -252,25 +254,30 @@ class Upload extends React.Component {
 			});
 		}
 	}
+	setWidth() {
+		this.setState({
+			width: [ '90vw', '80vw', '50vw', '40vw' ]
+		});
+	}
 	render() {
 		return (
-			<div id="upload">
+			<div>
 				{this.state.token ? (
-					<Flex align={'center'} justify={'center'} p={[ '0' ]} w="100%">
-						<Stack spacing={4} width="30rem">
-							<Heading align="center" color="white" className="font text-shadow" fontSize="3xl">
-								This is a Caption
+					<Flex align={'center'} justify={'center'} p={[ '0' ]}>
+						<Stack spacing={4}>
+							<Heading align="center" className="font" fontSize="3xl">
+								Skin Disease Detection App
 							</Heading>
-							<Box
-								
-								overflow="scroll"
-								style={{ scrollbarWidth: 'none', marginBottom: "2rem" }}
-								rounded="md"
-								bg="white"
-								boxShadow={'lg'}
-								p={6}
-							>
-								{!this.state.disease ? (
+							{!this.state.disease ? (
+								<Box
+									w={[ '90vw', '80vw', '80vw', '40vw' ]}
+									style={{ scrollbarWidth: 'none', marginBottom: '2rem' }}
+									rounded="md"
+									bg="white"
+									boxShadow={'lg'}
+									p={6}
+									width="100%"
+								>
 									<Stack spacing={2}>
 										<FormControl id="email">
 											<FormLabel>Select the image file (.jpg, .png)</FormLabel>
@@ -296,14 +303,18 @@ class Upload extends React.Component {
 											{this.state.img_url ? (
 												<Center>
 													<Image
-													transition= "all 0.2s cubic-bezier(.39,.58,.57,1);"
-													_active={{
-														outline: 'none',
-														transform: 'scale(0.94)',
-														boxShadow: 'none'
-													}}
-													_hover={{boxShadow: "1px 0px 22px grey", transform: "scale(1.01)"}}
-													rounded="md"
+														onClick={() => this.fileInput.click()}
+														transition="all 0.2s cubic-bezier(.39,.58,.57,1);"
+														_active={{
+															outline: 'none',
+															transform: 'scale(0.94)',
+															boxShadow: 'none'
+														}}
+														_hover={{
+															boxShadow: '1px 0px 22px grey',
+															transform: 'scale(1.01)'
+														}}
+														rounded="md"
 														width="70%"
 														mx="0"
 														src={this.state.img_url}
@@ -313,22 +324,7 @@ class Upload extends React.Component {
 											) : null}
 											{/* <Input type="email" /> */}
 										</FormControl>
-										<FormControl>
-											<FormLabel>Run Assessment For</FormLabel>
-											{/* <InputGroup size="md" my="4">
-											<Select
-												onChange={(e) => this.handleDisease(e)}
-												value={this.state.disease_type}
-												variant="outline"
-												placeholder="Select Type"
-											>
-												<option disabled hidden value="" />
-												{this.state.arr1.map((x, idx) => (
-													<option className="font" value={x}>{this.state.arr2[idx]}</option>
-												))}
-											</Select>
-										</InputGroup> */}
-										</FormControl>
+
 										<Stack spacing={4}>
 											{/* {this.state.arr2.map((x, idx) => (
 											<Button
@@ -355,6 +351,7 @@ class Upload extends React.Component {
 											</Button>
 										))} */}
 											<Button
+												mt="1rem"
 												disabled={!this.state.files || this.state.apiLoading2 === true}
 												outline="none"
 												boxShadow="none"
@@ -371,12 +368,12 @@ class Upload extends React.Component {
 													boxShadow: 'none'
 												}}
 												isLoading={this.state.apiLoading1}
-												colorScheme="skin"
+												colorScheme="blue"
 												onClick={(e) => this.handleCancerUpload(e)}
 											>
-												Assess Type of Cancer
+												Run Assessment
 											</Button>
-											<Button
+											{/* <Button
 												disabled={!this.state.files || this.state.apiLoading1 === true}
 												outline="none"
 												boxShadow="none"
@@ -397,29 +394,18 @@ class Upload extends React.Component {
 												onClick={(e) => this.handleMelanomaUpload(e)}
 											>
 												Assess Malignancy
-											</Button>
+											</Button> */}
 										</Stack>
 									</Stack>
-								) : (
-									<Stack spacing={4}>
-										{' '}
-										<News name={this.state.disease} />
-										<Text>Similar Images</Text>
-										<Similar />
-										<Button colorScheme="skin" onClick={() => this.cleanUp()}>
-											Assess Another
-										</Button>
-									</Stack>
-								)}
 
-								{this.state.invalid ? (
-									<Alert mt="4" variant="left-accent" status="error">
-										<AlertIcon />
-										The image is invalid
-									</Alert>
-								) : null}
+									{this.state.invalid ? (
+										<Alert mt="4" variant="left-accent" status="error">
+											<AlertIcon />
+											The image is invalid
+										</Alert>
+									) : null}
 
-								{/* {this.state.disease_type === 'acne' ? this.state.disease ? this.state.disease ===
+									{/* {this.state.disease_type === 'acne' ? this.state.disease ? this.state.disease ===
 									'acne' ? (
 										<News name="ACNE" />
 									) : (
@@ -444,23 +430,85 @@ class Upload extends React.Component {
 											click on predict to predict
 										</Text>
 									)} */}
-							</Box>
+								</Box>
+							) : (
+								<Box
+									w={[ '100vw', '100vw', '80vw', '70vw' ]}
+									style={{ scrollbarWidth: 'none', marginBottom: '2rem' }}
+									rounded="md"
+									bg="white"
+									boxShadow={'lg'}
+									p={3}
+									width="100%"
+								>
+									<SimpleGrid minChildWidth="450px" spacing="10px" m="6">
+										<Center>
+											<Stack w={[ '80vw', '80vw', '40vw', '35vw' ]} spacing={4}>
+												<Text mb="2" fontSize="2xl">
+													Result: <Text fontSize="2xl" textTransform="uppercase">{this.state.disease}</Text> 
+												</Text>
+												{this.state.img_url ? (
+													<div>
+														<Text mb="2" fontSize="2xl">Your Image: </Text>
+														<Center>
+															<Image
+																
+																transition="all 0.3s cubic-bezier(.39,.58,.57,1);"
+																_active={{
+																	outline: 'none',
+																	transform: 'scale(0.98)',
+																	boxShadow: 'none'
+																}}
+																_hover={{
+																	boxShadow: '1px 0px 22px grey',
+																	transform: 'scale(1.01)'
+																}}
+																rounded="md"
+																width="70%"
+																mx="0"
+																src={this.state.img_url}
+																alt="selected image"
+															/>
+														</Center>
+													</div>
+												) : null}
+											</Stack>
+										</Center>
+										<Center>
+											<Stack w={[ '80vw', '80vw', '30vw', '25vw' ]} spacing={4}>
+												<Text fontSize="2xl">Similar Images</Text>
+												<Similar />
+												<Button colorScheme="blue" onClick={() => this.cleanUp()}>
+													Assess Another
+												</Button>
+											</Stack>
+										</Center>
+									</SimpleGrid>
+								</Box>
+							)}
 						</Stack>
 					</Flex>
 				) : (
-					<Flex align={'center'} justify={'center'}>
-						<Stack spacing={8} maxW={'lg'} px={6}>
+					<Flex id="signin" align={'center'} justify={'center'}>
+						<Stack spacing={8} px={6}>
 							<Stack align={'center'}>
-								<Heading color="white" className="font" fontSize={'4xl'}>
+								<Heading className="font" fontSize={'4xl'}>
 									Welcome Back!
 								</Heading>
 							</Stack>
-							<Box rounded={'lg'} bg="white" boxShadow={'lg'} p={8}>
+							<Box
+								w={[ '90vw', '80vw', '50vw', '40vw' ]}
+								rounded={'lg'}
+								bg="white"
+								boxShadow={'lg'}
+								p={8}
+							>
 								<Stack spacing={4}>
 									<FormControl id="email">
 										<FormLabel>Username</FormLabel>
 										<InputGroup my="4">
 											<Input
+												colorScheme="blue"
 												type="text"
 												name="username"
 												value={this.state.username}
@@ -497,7 +545,7 @@ class Upload extends React.Component {
 														transform: 'scale(0.94)',
 														boxShadow: 'none'
 													}}
-													colorScheme="skin"
+													colorScheme="blue"
 													h="1.75rem"
 													size="sm"
 													onClick={(e) => this.handleClick(e)}
@@ -524,7 +572,7 @@ class Upload extends React.Component {
 												boxShadow: 'none'
 											}}
 											isLoading={this.state.loginLoad}
-											colorScheme="skin"
+											colorScheme="blue"
 											onClick={(e) => this.handleLogin(e)}
 										>
 											Sign in

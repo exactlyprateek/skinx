@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Upload from './Upload';
-import { Container, Box,  Center, Heading, VStack } from '@chakra-ui/react';
+import { Container, Box, Center, Heading, VStack } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { FiLogOut } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
@@ -22,16 +22,16 @@ export default function Main() {
 		<span id="main">
 			{/* <NavBar />{' '} */}
 			<Center>
-				<Container minHeight="100vh" p="0" m="0" width="100%">
-					<VStack style={{ minWidth: '100%' }}>
-						<Container pt="4" maxW="container.xl">
+			
+					<VStack minW="100vw">
+						<Container pt="4" maxW="container.lg">
 							<Heading
 								alignContent="start"
 								d="flex"
 								fontWeight="600"
-								color="white"
+								
 								size="xl"
-								className="title-font text-shadow"
+								className="title-font"
 							>
 								SkinX
 								{isToken === false ? null : (
@@ -48,7 +48,7 @@ export default function Main() {
 											boxShadow: 'none'
 										}}
 										_hover={{ bg: 'transparent' }}
-										color="#fff"
+										colorScheme="blue"
 										variant="outline"
 										rightIcon={
 											<IconContext.Provider value={{ size: '24px' }}>
@@ -61,10 +61,8 @@ export default function Main() {
 								)}
 							</Heading>
 						</Container>
-						<Box mx="4" w="90%">
-							<Center>
-								<Upload />
-							</Center>
+						<Box w="100vw" mx="4">
+							<Upload />
 						</Box>
 					</VStack>
 
@@ -86,7 +84,7 @@ export default function Main() {
 							</SimpleGrid>
 						</Center>
 					</Box> */}
-				</Container>{' '}
+			
 			</Center>
 		</span>
 	);
