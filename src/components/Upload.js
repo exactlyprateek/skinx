@@ -119,7 +119,7 @@ class Upload extends React.Component {
 			)
 			.then((response) => {
 				this.setState({
-					disease: response.data.disease,
+					disease: response.data.disease.replaceAll(" ", ""),
 					apiLoading1: false
 				});
 
@@ -200,18 +200,19 @@ class Upload extends React.Component {
 			}
 		})
 			.then((response) => {
+				let dis = response.data.disease.replaceAll(" ", "");
 				this.setState({
-					disease: response.data.disease,
+					disease: dis,
 					apiLoading: false
 				});
-
+				console.log(response.data.disease.replaceAll(" ", ""));
 				if (response.data === 'Please upload a valid image') {
 					this.setState({
 						invalid: true,
 						apiLoading: false
 					});
 				}
-				console.log(response);
+				console.log(dis);
 			})
 			.catch((response) => {
 				//handle error
@@ -446,7 +447,7 @@ class Upload extends React.Component {
 										<Center>
 											<Stack w={[ '80vw', '80vw', '40vw', '35vw' ]} spacing={4}>
 												<Text mb="2" fontSize="2xl">
-													Result: <Text fontSize="2xl" textTransform="uppercase">{this.state.disease}</Text> 
+													Result: <Text fontSize="2xl" textTransform="capitalize">{this.state.disease.replaceAll(" ", "").replaceAll("_", " ")}</Text> 
 												</Text>
 												{this.state.img_url ? (
 													<div>
