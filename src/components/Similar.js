@@ -1,22 +1,14 @@
 import React from 'react';
 import ImageGallery from 'react-image-gallery';
 
-function Similar() {
-	const images = [
-		{
-			original: 'https://picsum.photos/id/1018/1000/600/',
-			thumbnail: 'https://picsum.photos/id/1018/250/150/'
-		},
-		{
-			original: 'https://picsum.photos/id/1015/1000/600/',
-			thumbnail: 'https://picsum.photos/id/1015/250/150/'
-		},
-		{
-			original: 'https://picsum.photos/id/1019/1000/600/',
-			thumbnail: 'https://picsum.photos/id/1019/250/150/'
-		}
-	];
-
+function Similar(props) {
+	const images = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ].map((i) => ({
+		original: `${window.location.origin}/images/${props.disease}/${i}.jpeg`,
+		thumbnail: `${window.location.origin}/images/${props.disease}/${i}.jpeg`
+		// original:  `/${props.disease}/${i}.jpeg`,
+		// thumbnail:  `/${props.disease}/${i}.jpeg`
+	}));
+	
 	return (
 		<div>
 			<ImageGallery showPlayButton={false} items={images} />

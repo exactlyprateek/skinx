@@ -69,13 +69,13 @@ body {
 .text-shadow {
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.185);
 }
-#upload{
+#upload {
 	width: 100%;
-align-content: center;
-align-items: center;
-display: flex;
-justify-content: center;
+	align-content: center;
+	align-items: center;
+	display: flex;
+	justify-content: center;
 }
-html{
+html {
 	scrollbar-width: none;
 }

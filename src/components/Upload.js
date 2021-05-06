@@ -352,7 +352,7 @@ class Upload extends React.Component {
 										))} */}
 											<Button
 												mt="1rem"
-												disabled={!this.state.files || this.state.apiLoading2 === true}
+												disabled={!this.state.files || this.state.apiLoading1}
 												outline="none"
 												boxShadow="none"
 												border="none"
@@ -368,6 +368,7 @@ class Upload extends React.Component {
 													boxShadow: 'none'
 												}}
 												isLoading={this.state.apiLoading1}
+												
 												colorScheme="blue"
 												onClick={(e) => this.handleCancerUpload(e)}
 											>
@@ -460,7 +461,7 @@ class Upload extends React.Component {
 																	boxShadow: 'none'
 																}}
 																_hover={{
-																	boxShadow: '1px 0px 22px grey',
+																	boxShadow: '1px 0px 1rem grey',
 																	transform: 'scale(1.01)'
 																}}
 																rounded="md"
@@ -477,7 +478,7 @@ class Upload extends React.Component {
 										<Center>
 											<Stack w={[ '80vw', '80vw', '30vw', '25vw' ]} spacing={4}>
 												<Text fontSize="2xl">Similar Images</Text>
-												<Similar />
+												<Similar disease={this.state.disease} />
 												<Button colorScheme="blue" onClick={() => this.cleanUp()}>
 													Assess Another
 												</Button>
