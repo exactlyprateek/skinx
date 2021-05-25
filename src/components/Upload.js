@@ -20,6 +20,8 @@ import {
 	SimpleGrid
 } from '@chakra-ui/react';
 
+import { BrowserRouter, Route, Link } from "react-router-dom";
+
 // import News from './News';
 import Similar from './Similar';
 class Upload extends React.Component {
@@ -58,7 +60,7 @@ class Upload extends React.Component {
 		this.setState({ password: event.target.value });
 	};
 	handleFile = (event) => {
-		console.log(event.target.files[0]);
+		// console.log(event.target.files[0]);
 		this.setState({
 			files: event.target.files[0],
 			name: event.target.files[0].name,

@@ -4,10 +4,20 @@ import { Container, Box, Center, Heading, VStack } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/react';
 import { FiLogOut } from 'react-icons/fi';
 import { IconContext } from 'react-icons';
+import { AiOutlineSkin } from 'react-icons/ai';
+import { VscDiff } from 'react-icons/vsc';
+import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom';
 import './styles/style.css';
+import Classify from './Classify';
+// import { Link, Redirect } from 'react-router-dom';
 function logout() {
 	localStorage.removeItem('token');
 	window.location.reload();
+	return <Redirect to="/" />;
+}
+function classifier() {
+	console.log('redirecting');
+	// return <Redirect to="/classify" />;
 }
 export default function Main() {
 	let [ isToken, setIsToken ] = useState(false);
@@ -20,21 +30,65 @@ export default function Main() {
 	}, []);
 	return (
 		<span id="main">
-			{/* <NavBar />{' '} */}
-			<Center>
-			
-					<VStack minW="100vw">
-						<Container pt="4" maxW="container.lg">
-							<Heading
-								alignContent="start"
-								d="flex"
-								fontWeight="600"
-								
-								size="xl"
-								className="title-font"
-							>
-								SkinX
-								{isToken === false ? null : (
+			<VStack minW="100vw">
+				<BrowserRouter>
+					{' '}
+					<Container pt="4" maxW="container.lg">
+						<Heading alignContent="start" d="flex" fontWeight="600" size="xl" className="title-font">
+							SkinX
+							{!isToken ? null : (
+								<Box margin="0 0 0 auto">
+									<Link to={'/'}>
+										<Button
+											margin="0 1rem 0 auto"
+											onClick={classifier}
+											boxShadow="none"
+											transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+											_focus={{
+												boxShadow: 'none'
+											}}
+											_active={{
+												transform: 'scale(0.94)',
+												boxShadow: 'none'
+											}}
+											// _hover={{ bg: 'transparent' }}
+											colorScheme="blue"
+											variant="outline"
+											rightIcon={
+												<IconContext.Provider value={{ size: '24px' }}>
+													<AiOutlineSkin />
+												</IconContext.Provider>
+											}
+										>
+											Skin
+										</Button>
+									</Link>
+									<Link to={'/classify'}>
+										<Button
+											margin="0 1rem 0 auto"
+											onClick={classifier}
+											boxShadow="none"
+											transition="all 0.2s cubic-bezier(.08,.52,.52,1)"
+											_focus={{
+												boxShadow: 'none'
+											}}
+											_active={{
+												transform: 'scale(0.94)',
+												boxShadow: 'none'
+											}}
+											// _hover={{ bg: 'transparent' }}
+											colorScheme="blue"
+											variant="outline"
+											rightIcon={
+												<IconContext.Provider value={{ size: '24px' }}>
+													<VscDiff />
+												</IconContext.Provider>
+											}
+										>
+											Classfier
+										</Button>
+									</Link>
+
 									<Button
 										margin="0 0 0 auto"
 										onClick={logout}
@@ -47,8 +101,8 @@ export default function Main() {
 											transform: 'scale(0.94)',
 											boxShadow: 'none'
 										}}
-										_hover={{ bg: 'transparent' }}
-										colorScheme="blue"
+										// _hover={{ bg: 'transparent' }}
+										colorScheme="red"
 										variant="outline"
 										rightIcon={
 											<IconContext.Provider value={{ size: '24px' }}>
@@ -58,34 +112,16 @@ export default function Main() {
 									>
 										Logout
 									</Button>
-								)}
-							</Heading>
-						</Container>
-						<Box w="100vw" mx="4">
-							<Upload />
-						</Box>
-					</VStack>
-
-					{/* <Box className="shadow-anim" bg="#f8f9fa" height="87vh">
-						<Heading className="font" size="xl" mt="2">
-							More Examples
+								</Box>
+							)}
 						</Heading>
-						<Center>
-							{' '}
-							<SimpleGrid m="4" columns="2" spacing="10px">
-								{' '}
-								{[ '1', '2', '3', '4', '5', '6' ].map((i, idx) => (
-									<Image
-										src={`http://via.placeholder.com/180?text=Image+${i}`}
-										alt="image"
-										key={idx}
-									/>
-								))}
-							</SimpleGrid>
-						</Center>
-					</Box> */}
-			
-			</Center>
+					</Container>
+					<Box w="100vw" mx="4">
+						<Route exact name="upload" path="/" component={Upload} />
+						<Route name="classify" path="/classify" component={Classify} />
+					</Box>
+				</BrowserRouter>
+			</VStack>
 		</span>
 	);
 }
