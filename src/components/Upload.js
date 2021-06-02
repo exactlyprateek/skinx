@@ -24,6 +24,7 @@ import { BrowserRouter, Route, Link } from "react-router-dom";
 
 // import News from './News';
 import Similar from './Similar';
+import ShowImage from './ShowImage';
 class Upload extends React.Component {
 	state = {
 		files: null,
@@ -61,12 +62,15 @@ class Upload extends React.Component {
 	};
 	handleFile = (event) => {
 		// console.log(event.target.files[0]);
-		this.setState({
+		if(event.target.files[0]){
+			this.setState({
 			files: event.target.files[0],
 			name: event.target.files[0].name,
 			img_url: URL.createObjectURL(event.target.files[0]),
 			invalid: false
 		});
+		}
+		
 	};
 	handleLogin = () => {
 		this.setState({
@@ -305,23 +309,11 @@ class Upload extends React.Component {
 
 											{this.state.img_url ? (
 												<Center>
-													<Image
-														onClick={() => this.fileInput.click()}
-														transition="all 0.2s cubic-bezier(.39,.58,.57,1);"
-														_active={{
-															outline: 'none',
-															transform: 'scale(0.94)',
-															boxShadow: 'none'
-														}}
-														_hover={{
-															boxShadow: '1px 0px 22px grey',
-															transform: 'scale(1.01)'
-														}}
-														rounded="md"
-														width="70%"
-														mx="0"
-														src={this.state.img_url}
-														alt="selected image"
+													<ShowImage
+														func={() => this.fileInput.click()}
+														
+														url={this.state.img_url}
+														text="selected image"
 													/>
 												</Center>
 											) : null}
@@ -455,23 +447,10 @@ class Upload extends React.Component {
 													<div>
 														<Text mb="2" fontSize="2xl">Your Image: </Text>
 														<Center>
-															<Image
+															<ShowImage
 																
-																transition="all 0.3s cubic-bezier(.39,.58,.57,1);"
-																_active={{
-																	outline: 'none',
-																	transform: 'scale(0.98)',
-																	boxShadow: 'none'
-																}}
-																_hover={{
-																	boxShadow: '1px 0px 1rem grey',
-																	transform: 'scale(1.01)'
-																}}
-																rounded="md"
-																width="70%"
-																mx="0"
-																src={this.state.img_url}
-																alt="selected image"
+																url={this.state.img_url}
+																text="selected image"
 															/>
 														</Center>
 													</div>

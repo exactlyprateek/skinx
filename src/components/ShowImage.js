@@ -12,7 +12,7 @@ function ShowImage(props) {
 				boxShadow: 'none'
 			}}
 			_hover={{
-				boxShadow: '1px 0px 22px grey',
+				boxShadow: 'var(--chakra-shadows-xl)',
 				transform: 'scale(1.01)'
 			}}
 			rounded="md"
